@@ -1,0 +1,16 @@
+<!--
+# to intialize git (git init)
+# to see git status (git status)
+# to add file in git (git add index.html)
+# to add all file (git add .)
+# to add commit (git commit -m "message")
+# to commit histroy (git log -p filename)
+# "q" to exist from git histroy
+# to see last ( git log -n 5 )
+# to see in oneline (git log --oneline) 
+# to push repository (git push origin main)
+# to add branch (git branch -M main)
+# to push (git push -u origin main)
+# to link local repository to githup(git remote add origin "repository link")
+#   
+-->

@@ -1,0 +1,148 @@
+/* Global Styles */
+:root {
+    --primary-color: #007bff;
+    --text-color: #333;
+    --background-color: #f9f9f9;
+    --border-radius: 5px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200vh;
+    padding: 20px;
+}
+
+/* Container */
+.container {
+    background: #fff;
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+p {
+    color: var(--text-color);
+    margin-bottom: 20px;
+}
+
+/* Form Styles */
+.input-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #0056b3;
+}
+.exp{
+    display: inline;
+}
+
+.image1{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    /* float: left; */
+}
+.email{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+.image2{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    /* float: left; */
+}
+.phone{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+.image3{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    /* float: left; */
+}
+.web{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+.image4{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    /* float: left; */
+}
+.link{
+    margin-top: 28px;
+    margin-left: 30px;
+}
+.image5{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    /* float: left; */
+}
+.github{
+    margin-top: 28px;
+    margin-left: 30px;
+}
+a{
+    text-decoration: none;
+    color: darkgray;
+}

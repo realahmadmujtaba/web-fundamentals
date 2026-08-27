@@ -1,0 +1,25 @@
+.main{
+    border: 2px solid black;
+    display: inline-block;
+    width: 400px;
+    height: 300px;
+}
+.a, .b, .c {
+    height: 100px;
+    width: 400px;
+}
+.b{
+    background-color: red;
+}
+.c{
+    background-color: blue;
+}
+/* img{
+    position: absolute;
+    top: 30px;
+    left: 150px;
+    width: 100px;
+    height: 100px;
+
+} */
+

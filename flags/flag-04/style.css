@@ -1,0 +1,23 @@
+.main{
+    display: inline-block;
+    border: 2px solid black;
+    width: 440px;
+    height: 280px;
+}
+.a, .b, .c, .d{
+    width: 440px;
+    height:70px;
+
+}
+.a{
+    background-color: red;
+}
+.b{
+    background-color:  blue;
+}
+.c{
+    background-color: yellow;
+}
+.d{
+    background-color: green;
+}

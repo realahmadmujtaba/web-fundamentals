@@ -1,0 +1,172 @@
+.main{
+    height: 300vh;
+    width: 100%;
+    background-color: #f0f1f3;
+    color: darkgray;
+    /* border-left: 10% solid; */
+    /* clip-path: polygon(0 0,100% 0, 0 100%); */
+}
+.main1{
+    margin-left: 50px;
+    margin-right: 50px;
+}
+.name{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    padding-top:50px;
+    font-weight: 1px;
+
+    /* position: absolute; */
+}
+.name1{
+    padding-left:7px;
+    color:  navy;
+}
+.skill{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    /* padding-top:5px; */
+
+    /* position: absolute; */
+}
+.about{
+    background-color: rgb(255, 213, 0);
+    border-radius: 20px;
+    width: 80%;
+    float: left;
+    padding: 4px;
+    margin-top: 50px;
+    color: black;
+    font-weight: 600;
+}
+.about_data{
+    float: left;
+    margin-top: 30px;
+    width: 80%;
+    font-size: 20px;
+    line-height: 30px;
+}
+.pic{
+    position: relative;
+    bottom: 30px;
+    /* right: 5px; */
+    border: 6px solid rgb(255, 213, 0,0.8);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    width: 190px;
+    height: 190px;
+    float: right;
+}
+.my-image{
+    width: 180px;
+    height: 180px;
+}
+.edu{
+    padding: 4px;
+    margin-top: 30px;
+    color: black;
+    font-weight: 600;
+    width: 98%;
+    background-color: rgb(255, 213, 0);
+    border-radius: 20px;
+    display: inline-block;
+}
+.matric{
+    
+    margin-top: 30px;
+    display: inline-block;
+}
+.inter{
+    margin-top: 30px;
+    display: inline-block;
+    margin-left: 100px;
+}
+.bs{
+    margin-top: 30px;
+    display: inline-block;
+    margin-left: 100px;
+}
+.exp{
+    background-color: rgb(255, 213, 0);
+    border-radius: 20px;
+    width: 98%;
+    padding: 4px;
+    margin-top: 50px;
+    color: black;
+    font-weight: 600;
+}
+.exp_data{
+    margin-top: 30px;
+    /* width: 80%; */
+    font-size: 20px;
+    line-height: 30px;
+}
+.exp1{
+    margin-top: 30px;
+    display: inline-block;   
+}
+.exp2{
+    margin-top: 30px;
+    margin-left: 100px;
+    display: inline-block;   
+}
+.image1{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    float: left;
+}
+.email{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+.image2{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    float: left;
+}
+.phone{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+.image3{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    float: left;
+}
+.web{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+.image4{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    float: left;
+}
+.link{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+.image5{
+    width: 20px;
+    height: 20px;
+    margin-top: 30px;
+    margin-left: 20px;
+    float: left;
+}
+.github{
+    margin-top: 28px;
+    margin-left: 70px;
+}
+a{
+    text-decoration: none;
+    color: darkgray;
+}

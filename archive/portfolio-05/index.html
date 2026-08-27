@@ -1,0 +1,557 @@
+<script type="text/javascript">
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+        return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                    row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                    headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+    }
+</script>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Software House - Amu.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Hero Section Styles */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes float-delayed {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-float-delayed {
+            animation: float-delayed 5s ease-in-out infinite;
+        }
+
+        /* About Section Styles */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .hover-scale:hover {
+            transform: scale(1.02);
+            transition: transform 0.3s ease;
+        }
+
+        /* Services Section Styles */
+        @keyframes fadeInUpServices {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up-services {
+            animation: fadeInUpServices 0.8s ease-out forwards;
+        }
+
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #3B82F6, #8B5CF6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-gray-900 font-['Inter']">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full bg-gray-900/80 backdrop-blur-md z-20 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="text-2xl font-bold text-white">
+                <a href="/" class="flex items-center">
+                    <span class="text-blue-400">Amu</span>.
+                </a>
+            </div>
+            <!-- Menu Links -->
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-gray-300 hover:text-blue-400 transition duration-300">Home</a>
+                <a href="#services" class="text-gray-300 hover:text-blue-400 transition duration-300">Services</a>
+                <a href="#portfolio" class="text-gray-300 hover:text-blue-400 transition duration-300">Portfolio</a>
+                <a href="#about" class="text-gray-300 hover:text-blue-400 transition duration-300">About</a>
+                <a href="#contact" class="text-gray-300 hover:text-blue-400 transition duration-300">Contact</a>
+            </div>
+            <!-- CTA Button -->
+            <div class="hidden md:block">
+                <a href="#contact"
+                    class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700 transition duration-300">
+                    Get Start
+                </a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <div class="md:hidden">
+                <button id="menu-toggle" class="text-gray-300 hover:text-blue-400 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/90 px-6 py-4">
+            <a href="#home" class="block text-gray-300 hover:text-blue-400 py-2 transition duration-300">Home</a>
+            <a href="#services"
+                class="block text-gray-300 hover:text-blue-400 py-2 transition duration-300">Services</a>
+            <a href="#portfolio"
+                class="block text-gray-300 hover:text-blue-400 py-2 transition duration-300">Portfolio</a>
+            <a href="#about" class="block text-gray-300 hover:text-blue-400 py-2 transition duration-300">About</a>
+            <a href="#contact" class="block text-gray-300 hover:text-blue-400 py-2 transition duration-300">Contact</a>
+            <a href="#contact"
+                class="block bg-blue-600 text-white text-center font-semibold py-2 px-6 rounded-full mt-4 hover:bg-blue-700 transition duration-300">
+                Get Start
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden pt-16">
+        <!-- Background Gradient and Particles -->
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-900 via-gray-900 to-purple-900"></div>
+        <div class="absolute inset-0 opacity-30">
+            <div
+                class="w-full h-full bg-[url('https://source.unsplash.com/random/1920x1080?tech')] bg-cover bg-center animate-pulse">
+            </div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
+            <h1 class="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                Building the <span class="text-blue-400">Future</span> of Software
+            </h1>
+            <p class="text-lg md:text-xl text-gray-300 mb-8">
+                We craft cutting-edge, scalable solutions to empower your business with innovative technology.
+            </p>
+            <div class="flex justify-center gap-4">
+                <a href="#contact"
+                    class="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-full hover:bg-blue-700 transition duration-300">
+                    Get Started
+                </a>
+                <a href="#portfolio"
+                    class="inline-block bg-transparent border-2 border-blue-400 text-blue-400 font-semibold py-3 px-8 rounded-full hover:bg-blue-400 hover:text-white transition duration-300">
+                    Our Work
+                </a>
+            </div>
+        </div>
+
+        <!-- Floating Cards for Visual Interest -->
+        <div class="absolute top-10 left-10 hidden md:block">
+            <div class="bg-blue-500/20 backdrop-blur-lg p-4 rounded-lg shadow-lg animate-float">
+                <p class="text-blue-300">Projects Delivered</p>
+            </div>
+        </div>
+        <div class="absolute bottom-20 right-10 hidden md:block">
+            <div class="bg-purple-500/20 backdrop-blur-lg p-4 rounded-lg shadow-lg animate-float-delayed">
+                <p class="text-purple-300">Years of Expertise</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="max-w-7xl mx-auto px-6 py-24 bg-gray-50">
+        <!-- Header -->
+        <div class="text-center mb-16 fade-in-up">
+            <h2 class="text-5xl font-bold text-gray-900 tracking-tight">About Amu.</h2>
+            <p class="mt-5 text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                We are a forward-thinking web development agency dedicated to creating impactful, high-performance
+                websites that elevate businesses in the digital landscape.
+            </p>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid lg:grid-cols-2 gap-12">
+            <div class="bg-white p-8 rounded-xl shadow-lg hover-scale fade-in-up">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4">Who We Are</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    At <strong>Amu.</strong>, we are a team of passionate developers, designers, and strategists
+                    committed to excellence. Since our founding, we’ve empowered businesses worldwide with custom-built,
+                    responsive websites that combine aesthetic elegance with technical precision, ensuring seamless user
+                    experiences across all devices.
+                </p>
+            </div>
+
+            <div class="bg-white p-8 rounded-xl shadow-lg hover-scale fade-in-up">
+                <h3 class="text-2xl font-semibold text-blue-700 mb-4">Our Expertise</h3>
+                <ul class="space-y-3 text-gray-600">
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        Tailored Website Development
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        Responsive & Mobile-Optimized Design
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        High-Impact Landing Pages
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        AI Integration
+                    </li>
+                    <li class="flex items-center">
+                        <svg class="w-5 h-5 text-blue-700 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                        Ongoing Support & Maintenance
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Mission -->
+        <div
+            class="mt-20 text-center bg-gradient-to-r from-blue-50 to-gray-100 py-12 px-8 rounded-xl shadow-lg fade-in-up">
+            <h3 class="text-2xl font-semibold text-blue-700 mb-4">Our Mission</h3>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                Our mission is to transform visions into reality by delivering exceptional web solutions that captivate
+                users, strengthen brands, and drive measurable business success.
+            </p>
+            <a href="#contact"
+                class="mt-6 inline-block bg-blue-700 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-800 transition">Connect
+                With Us</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6 md:px-12 lg:px-20 bg-gradient-to-b from-gray-50 to-gray-100">
+        <div class="max-w-7xl mx-auto text-center fade-in-up-services">
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 gradient-text">Our Services</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Empowering your business with cutting-edge, responsive, and high-performance digital solutions tailored
+                to your unique needs.
+            </p>
+        </div>
+
+        <div class="grid gap-8 mt-16 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+            <!-- Service Card 1 -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg card-hover fade-in-up-services"
+                style="animation-delay: 0.1s;">
+                <div class="flex items-center justify-center w-16 h-16 bg-blue-100 text-blue-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Custom Web Development</h3>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    Bespoke websites built with clean, scalable code and seamless backend integrations for optimal
+                    performance.
+                </p>
+            </div>
+
+            <!-- Service Card 2 -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg card-hover fade-in-up-services"
+                style="animation-delay: 0.2s;">
+                <div
+                    class="flex items-center justify-center w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7 16l-4 4m0 0l4-4m-4 4h18" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Responsive Design</h3>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    Pixel-perfect designs that adapt flawlessly across mobile, tablet, and desktop devices.
+                </p>
+            </div>
+
+            <!-- Service Card 3 -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg card-hover fade-in-up-services"
+                style="animation-delay: 0.3s;">
+                <div class="flex items-center justify-center w-16 h-16 bg-amber-100 text-amber-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Landing Pages</h3>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    Conversion-driven landing pages crafted to maximize engagement and impact.
+                </p>
+            </div>
+
+            <!-- Service Card 4 -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg card-hover fade-in-up-services"
+                style="animation-delay: 0.4s;">
+                <div class="flex items-center justify-center w-16 h-16 bg-purple-100 text-purple-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-4.35-4.35M10 18a8 8 0 100-16 8 8 0 000 16z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">AI Integration</h3>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    Integrated AI features using OpenAI API to enhance user experience with smart suggestions and chat
+                    interactions.</p>
+            </div>
+
+            <!-- Service Card 5 -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg card-hover fade-in-up-services"
+                style="animation-delay: 0.5s;">
+                <div class="flex items-center justify-center w-16 h-16 bg-rose-100 text-rose-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6v6l4 2m-4-8V4m0 2a8 8 0 110 16 8 8 0 010-16z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">Maintenance & Support</h3>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    Proactive updates, secure backups, and 24/7 monitoring for uninterrupted performance.
+                </p>
+            </div>
+
+            <!-- Service Card 6 -->
+            <div class="bg-white p-8 rounded-2xl shadow-lg card-hover fade-in-up-services"
+                style="animation-delay: 0.6s;">
+                <div class="flex items-center justify-center w-16 h-16 bg-teal-100 text-teal-600 rounded-full mb-6">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12l2 2 4-4m5 5a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900 mb-3">UI/UX Design</h3>
+                <p class="text-gray-600 text-base leading-relaxed">
+                    Intuitive and visually stunning interfaces designed to enhance user satisfaction.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="py-24 px-6 md:px-12 lg:px-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto text-center fade-in-up">
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 text-white">Our Portfolio</h2>
+            <p class="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+                Discover some of our standout projects that demonstrate our expertise in delivering innovative and
+                impactful digital solutions.
+            </p>
+        </div>
+
+        <div class="grid gap-8 mt-16 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+            <!-- Project Card 1 -->
+            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg card-hover fade-in-up" style="animation-delay: 0.1s;">
+                <div
+                    class="w-full h-48 bg-gray-700 rounded-lg mb-4 bg-[url('./portfolio.png')]  bg-center bg-cover">
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Personal Portfolio</h3>
+                <p class="text-gray-400 text-base leading-relaxed">
+                    Responsive portfolio website with smooth navigation, project showcases, and contact integration.
+                </p>
+            </div>
+
+            <!-- Project Card 2 -->
+            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg card-hover fade-in-up" style="animation-delay: 0.2s;">
+                <div
+                    class="w-full h-48 bg-gray-700 rounded-lg mb-4 bg-[url('./image.png')] bg-cover bg-center">
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">Resturant Menu App</h3>
+                <p class="text-gray-400 text-base leading-relaxed">
+                    Developed a restaurant web app with Express, featuring sleek UI/UX and optimized performance across devices.
+                </p>
+            </div>
+
+            <!-- Project Card 3 -->
+            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg card-hover fade-in-up" style="animation-delay: 0.3s;">
+                <div
+                    class="w-full h-48 bg-gray-700 rounded-lg mb-4 bg-[url('./todolist2.png')]  bg-cover ">
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">To-do-list</h3>
+                <p class="text-gray-400 text-base leading-relaxed">
+                    Built an interactive To-Do app in React with real-time updates, task filters, and clean UI for productivity.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 px-6 md:px-12 lg:px-20 bg-gradient-to-b from-gray-50 to-gray-100">
+        <div class="max-w-7xl mx-auto text-center fade-in-up">
+            <h2 class="text-5xl md:text-6xl font-extrabold mb-6 gradient-text">Get in Touch</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Ready to transform your digital presence? Contact us today to discuss your project needs.
+            </p>
+        </div>
+
+        <div class="mt-16 max-w-2xl mx-auto">
+            <div class="bg-white p-8 rounded-2xl shadow-lg fade-in-up">
+                <div class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                        <input type="text" id="name"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            placeholder="Your Name" required>
+                    </div>
+                    <div>
+                        <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                        <input type="email" id="email"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            placeholder="Your Email" required>
+                    </div>
+                    <div>
+                        <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                        <textarea id="message"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button
+                        class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition duration-300">
+                        Send Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-900 py-12 px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <!-- Branding -->
+            <div>
+                <h3 class="text-2xl font-bold text-white mb-4">
+                    <span class="text-blue-400">Amu</span>.
+                </h3>
+                <p class="text-gray-400">
+                    Building the future of software with innovative and scalable solutions.
+                </p>
+            </div>
+            <!-- Quick Links -->
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Quick Links</h4>
+                <ul class="space-y-2">
+                    <li><a href="#home" class="text-gray-300 hover:text-blue-400 transition duration-300">Home</a></li>
+                    <li><a href="#services"
+                            class="text-gray-300 hover:text-blue-400 transition duration-300">Services</a></li>
+                    <li><a href="#portfolio"
+                            class="text-gray-300 hover:text-blue-400 transition duration-300">Portfolio</a></li>
+                    <li><a href="#about" class="text-gray-300 hover:text-blue-400 transition duration-300">About</a>
+                    </li>
+                    <li><a href="#contact" class="text-gray-300 hover:text-blue-400 transition duration-300">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Contact Info -->
+            <div>
+                <h4 class="text-lg font-semibold text-white mb-4">Contact Us</h4>
+                <p class="text-gray-400 mb-2">Email: ahmadmujtaba0202@gmail.com</p>
+                <p class="text-gray-400 mb-2">Phone: +92 326 1611215</p>
+                <p class="text-gray-400">Address: Punjab, Pakistan</p>
+            </div>
+        </div>
+        <div class="mt-8 text-center text-gray-500">
+            <p>&copy; 2025 TechSolutions. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

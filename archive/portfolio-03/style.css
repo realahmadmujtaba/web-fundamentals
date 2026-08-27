@@ -1,0 +1,47 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Hero Section */
+.hero {
+    background: url('images/hero-bg.jpg') no-repeat center center/cover;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.hero .highlight {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+/* Sections */
+section {
+    padding: 60px 0;
+}
+
+.bg-light {
+    background-color: #f8f9fa !important;
+}
+
+/* Cards */
+.card {
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+.my-image{
+    width: 300px;
+    height: 300px;
+    /* box-shadow: 800px;
+    border-radius: 50px; */
+    margin-left: 150px;
+    position: relative;
+    bottom: 45px;
+}

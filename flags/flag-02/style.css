@@ -1,0 +1,35 @@
+
+.main1{
+    display: inline-block;
+    border: 2px solid black;
+    width: 400px;
+    height: 250px;
+}
+.x{
+    background-color: #ffffff;
+    width: 200px;
+    height: 250px;
+    position: absolute;
+    top: 10px;
+    
+}
+.y{
+    /* width: 400px; */
+    background-color: #00a650;
+    /* border: 2px solid black; */
+    width: 310px;
+    height: 250px;
+    position:absolute ;
+    left: 100px;
+}
+
+img{
+    position: absolute;
+    top: 30px;
+    left: 150px;
+    width: 200px;
+    height: 200px;
+    filter: invert(1);
+
+
+}
